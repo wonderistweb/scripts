@@ -1,0 +1,40 @@
+<script>
+  window.addEventListener("onVeltLoad", ({ detail }) => {
+    const { Velt } = detail;
+    if (Velt) {
+      const commentElement = Velt.getCommentElement();
+      commentElement.setCustomPriority([
+        {
+          id: "web",
+          name: "Web",
+          color: "#053535",
+          lightColor: "#DAE9E9",
+        },
+        {
+          id: "copy",
+          name: "Copy",
+          color: "#206767",
+          lightColor: "#DAE9E9",
+        },
+        {
+          id: "pm",
+          name: "PM",
+          color: "#509999",
+          lightColor: "#DAE9E9",
+        },
+        {
+          id: "design",
+          name: "Design",
+          color: "#DE6C5F",
+          lightColor: "#DAE9E9",
+        },
+        {
+          id: "client",
+          name: "Client",
+          color: "#8A2BE2",
+          lightColor: "#EDEBFB",
+        },
+      ]);
+    }
+  });
+</script>
