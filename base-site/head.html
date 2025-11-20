@@ -1,0 +1,25 @@
+<!-- Preconnects (reduce DNS + TLS cost) -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<!--<link rel="preconnect" href="https://cdn.plyr.io" crossorigin>-->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<!--<link rel="preconnect" href="https://api.wonderistcrm.com">-->
+<!--<link rel="preconnect" href="https://link.msgsndr.com">-->
+<link rel="preconnect" href="https://cdn.userway.org">
+<link rel="preconnect" href="https://cdn.velt.dev">
+<!-- Non-blocking CSS for Swiper/Plyr (fallback for no-JS users) -->
+<!-- Swiper JS -->
+<link rel="preload" as="style"
+      href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"></noscript>
+<!-- Plyr.io CSS -->
+<!-- <link rel="preload" as="style"
+      href="https://cdn.plyr.io/3.7.2/plyr.css"
+      onload="this.onload=null;this.rel='stylesheet'"> 
+<noscript><link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css"></noscript>-->
+<!-- Google Tag Manager (keep early; already async) -->
+
+
+<script>
+(function(global){global.pageFunctions=global.pageFunctions||{executed:{},functions:{},addFunction:function(id,fn){if(!this.functions[id])this.functions[id]=fn},executeFunctions:function(){if(this.added)return;this.added=true;for(const id in this.functions){if(!this.executed[id]){try{this.functions[id]();this.executed[id]=true}catch(e){console.error(`Error executing function ${id}:`,e)}}}}}})(window);
+</script>
