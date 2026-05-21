@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vimeo Thumbnail Fetcher</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        padding: 2rem;
+        max-width: 600px;
+      }
+
+      input,
+      button {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+
+      .result {
+        word-break: break-all;
+        margin-top: 1rem;
+      }
+
+      img {
+        max-width: 100%;
+        margin-top: 1rem;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Vimeo Thumbnail URL</h1>
+
+    <input type="text" id="vimeoUrl" placeholder="Paste Vimeo video URL (e.g. https://vimeo.com/1147455650)" />
+
+    <button id="fetchBtn">Get Thumbnail</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+      const input = document.getElementById("vimeoUrl");
+      const button = document.getElementById("fetchBtn");
+      const result = document.getElementById("result");
+
+      button.addEventListener("click", async () => {
+        const videoUrl = input.value.trim();
+        if (!videoUrl) {
+          result.textContent = "Please enter a Vimeo URL.";
+          return;
+        }
+
+        const oembedUrl = "https://vimeo.com/api/oembed.json?url=" + encodeURIComponent(videoUrl);
+
+        try {
+          const response = await fetch(oembedUrl);
+          if (!response.ok) throw new Error("Invalid Vimeo URL");
+
+          const data = await response.json();
+
+          const thumbnailUrl = data.thumbnail_url;
+
+          result.innerHTML = `
+            <strong>Thumbnail URL:</strong><br />
+            <a href="${thumbnailUrl}" target="_blank">${thumbnailUrl}</a>
+            <img src="${thumbnailUrl}" alt="Vimeo thumbnail" />
+          `;
+        } catch (err) {
+          result.textContent = "Could not fetch thumbnail. Check the URL.";
+        }
+      });
+    </script>
+  </body>
+</html>

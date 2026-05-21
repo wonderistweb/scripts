@@ -1,0 +1,50 @@
+<script>
+  (function (global) {
+    // I added comments for you Kat for faster reasoning on why was the line added or edited
+
+    /* 
+  	this constant variable is added so we can ensure that the global.pageFunctions object is being reused 
+  	this entire script block can be duplicated anywhere in the site and it will not recreate a new object
+    so we reuse the object if it has already been defined
+  */
+    const existing = global.pageFunctions || {};
+
+    // If already executed before, mark and prevent future runs
+    if (existing.__executedOnce) return;
+
+    //since we already created an object that uses the existing declaration, we need to update this block now to utilize the functions and attributes of the new object we made (the const existing object)
+    global.pageFunctions = global.pageFunctions || {
+      executed: existing.executed || {}, // use existing or create new
+      functions: existing.functions || {}, // use existing or create new
+      __added: existing.__added || false, // same this.added flag in the executeFunctions, but stored now so we can persist the state of it in case of duplication of this script block
+      __executedOnce: existing.__executedOnce || false, // this is now a second layer of safety for us, what we call double locking, __ in the variable names just tells us that this is a logic variable
+
+      addFunction: function (id, fn) {
+        if (!this.functions[id]) this.functions[id] = fn;
+      },
+
+      executeFunctions: function () {
+        // Prevent execution if already called
+        if (this.__added || this.__executedOnce) return;
+
+        this.__added = true; // flag it so it doesnt get run again
+        this.__executedOnce = true; // flag it so it doesnt get run again
+
+        for (const id in this.functions) {
+          if (!this.executed[id]) {
+            try {
+              this.functions[id]();
+              this.executed[id] = true;
+            } catch (e) {
+              console.error(`Error executing function ${id}:`, e);
+            }
+          }
+        }
+      },
+    };
+  })(window);
+</script>
+<!-- Plyr.io CSS -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
+<!-- Swiper JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />

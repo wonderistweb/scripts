@@ -1,0 +1,23 @@
+<!-- CounterUp -->
+<script src="https://unpkg.com/counterup2@2.0.2/dist/index.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.counterUp || !window.gsap) return;
+
+    const counterUp = window.counterUp.default;
+    const elements = document.querySelectorAll(".counterup");
+    if (!elements.length) return;
+
+    elements.forEach((el) => {
+      ScrollTrigger.create({
+        trigger: el,
+        onEnter: () =>
+          counterUp(el, {
+            duration: 2000,
+            delay: 16,
+          }),
+        toggleActions: "play reset play reset",
+      });
+    });
+  });
+</script>
