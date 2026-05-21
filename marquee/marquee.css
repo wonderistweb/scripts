@@ -1,0 +1,10 @@
+.wf-design-mode .marquee_wrap[data-preview-content='True'] {
+  display: block;
+}
+
+.wf-design-mode .marquee_wrap[data-preview-content='True'] .marquee_track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(max(18rem, (100% - ((var(--_column-count---value) - 1) * var(--_gap---size))) / var(--_column-count---value)), 100%), 1fr));
+  height: auto;
+  padding: 0;
+}
