@@ -1,19 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const SELECTOR = ".c-heading";
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  document.querySelectorAll("[data-rotate-heading='component']:not([data-rotate-heading='component'] [data-rotate-heading='component'])").forEach((component) => {
+    if (component.dataset.scriptInitialized) return;
+    component.dataset.scriptInitialized = "true";
 
-  document.querySelectorAll(".heading-animate_wrapper").forEach(initRotate);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  function initRotate(wrap) {
-    if (wrap.dataset.scriptInitialized === "true") return;
-    wrap.dataset.scriptInitialized = "true";
-
-    const headings = Array.from(wrap.querySelectorAll(SELECTOR));
+    const headings = Array.from(component.children);
     if (!headings.length) return;
 
-    // First heading stays in flow to set wrapper height.
-    // All others are taken out of flow so they don't affect it.
-    wrap.style.position = "relative";
+    const HOLD = parseFloat(component.getAttribute("data-hold")) || 1.5;
+    const DUR = parseFloat(component.getAttribute("data-duration")) || 0.4;
+
+    component.style.position = "relative";
     headings.slice(1).forEach((el) => {
       el.style.position = "absolute";
       el.style.top = "0";
@@ -21,59 +19,47 @@ document.addEventListener("DOMContentLoaded", () => {
       el.style.width = "100%";
     });
 
-    setWrapHeight(wrap, headings);
+    function setWrapHeight() {
+      headings.forEach((el) => {
+        el.style.position = "static";
+        el.style.height = "";
+      });
+      const maxHeight = Math.max(...headings.map((el) => el.offsetHeight));
+      headings.forEach((el, i) => {
+        el.style.height = maxHeight + "px";
+        el.style.position = i === 0 ? "static" : "absolute";
+      });
+      component.style.height = maxHeight + "px";
+    }
 
-    const ro = new ResizeObserver(() => setWrapHeight(wrap, headings));
-    ro.observe(wrap);
+    setWrapHeight();
+
+    const ro = new ResizeObserver(() => setWrapHeight());
+    ro.observe(component);
 
     if (reducedMotion.matches) {
-      applyStaticFallback(headings);
+      headings.forEach((el, i) => {
+        el.style.visibility = i === 0 ? "visible" : "hidden";
+      });
       return;
     }
 
     if (typeof gsap === "undefined") return;
 
     gsap.set(headings.slice(1), { autoAlpha: 0 });
-    createTimeline(headings, wrap);
+
+    const tl = gsap.timeline({ repeat: -1 });
+    headings.forEach((el) => {
+      tl.fromTo(el, { y: "100%", autoAlpha: 0 }, { y: "0%", autoAlpha: 1, duration: DUR, ease: "power2.out" }).to(el, { delay: HOLD, y: "-100%", autoAlpha: 0, duration: DUR, ease: "power2.in" });
+    });
 
     reducedMotion.addEventListener("change", (e) => {
       if (e.matches) {
         gsap.globalTimeline.clear();
-        applyStaticFallback(headings);
+        headings.forEach((el, i) => {
+          el.style.visibility = i === 0 ? "visible" : "hidden";
+        });
       }
     });
-  }
-
-  function setWrapHeight(wrap, headings) {
-    // Briefly put all headings back in flow for accurate measurement
-    headings.forEach((el) => (el.style.position = "static"));
-    const maxHeight = Math.max(...headings.map((el) => el.offsetHeight));
-    wrap.style.height = maxHeight + "px";
-    // Restore — first heading stays static, rest go absolute
-    headings[0].style.position = "static";
-    headings.slice(1).forEach((el) => (el.style.position = "absolute"));
-  }
-
-  function applyStaticFallback(headings) {
-    headings.forEach((el, i) => {
-      el.style.visibility = i === 0 ? "visible" : "hidden";
-    });
-  }
-
-  function createTimeline(headings, parent) {
-    const HOLD = parseFloat(parent.getAttribute("data-hold")) || 1.5;
-    const DUR = parseFloat(parent.getAttribute("data-duration")) || 0.4;
-
-    const tl = gsap.timeline({ repeat: -1 });
-
-    headings.forEach((el) => {
-      tl.fromTo(el, { y: "1em", autoAlpha: 0 }, { y: "0em", autoAlpha: 1, duration: DUR, ease: "power2.out" }).to(el, {
-        delay: HOLD,
-        y: "-1em",
-        autoAlpha: 0,
-        duration: DUR,
-        ease: "power2.in",
-      });
-    });
-  }
+  });
 });
