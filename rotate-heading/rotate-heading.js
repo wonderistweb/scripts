@@ -5,14 +5,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    const headings = Array.from(component.children);
+    const slot = component.querySelector("[data-rotate-heading='slot']");
+    if (!slot) return;
+
+    const headings = Array.from(slot.children);
     if (!headings.length) return;
 
     const rest = headings.slice(1);
-    const HOLD = parseFloat(component.getAttribute("data-hold")) || 1.5;
-    const DUR = parseFloat(component.getAttribute("data-duration")) || 0.4;
+    const delay = parseFloat(component.getAttribute("data-delay")) || 1.5;
+    const duration = parseFloat(component.getAttribute("data-duration")) || 0.4;
 
-    component.style.position = "relative";
+    slot.style.position = "relative";
     rest.forEach((el) => {
       el.style.position = "absolute";
       el.style.top = "0";
@@ -31,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         el.style.height = maxHeight + "px";
         el.style.position = i === 0 ? "static" : "absolute";
       });
-      component.style.height = maxHeight + "px";
+      slot.style.height = maxHeight + "px";
     }
 
     setWrapHeight();
@@ -55,7 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const tl = gsap.timeline({ repeat: -1 });
     headings.forEach((el) => {
-      tl.fromTo(el, { y: "100%", autoAlpha: 0 }, { y: "0%", autoAlpha: 1, duration: DUR, ease: "power2.out" }).to(el, { delay: HOLD, y: "-100%", autoAlpha: 0, duration: DUR, ease: "power2.in" });
+      tl.fromTo(el, { y: "100%", autoAlpha: 0 }, { y: "0%", autoAlpha: 1, duration: duration, ease: "power2.out" }).to(el, {
+        delay: delay,
+        y: "-100%",
+        autoAlpha: 0,
+        duration: duration,
+        ease: "power2.in",
+      });
     });
 
     reducedMotion.addEventListener("change", (e) => {
