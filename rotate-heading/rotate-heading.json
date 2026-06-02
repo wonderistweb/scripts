@@ -45,7 +45,6 @@
         "tag": "div",
         "classes": ["5122f1ab-3b55-f0cc-cea9-fff788badf08"],
         "children": [],
-        "v": "<script>\ndocument.addEventListener(\"DOMContentLoaded\", () => {\n\n  const SELECTOR = '[data-rotate-text=\"heading\"]';\n\n  document.querySelectorAll(\".headline-animate_wrapper\").forEach(initRotate);\n\n  function initRotate(wrap) {\n\n    if (wrap.dataset.scriptInitialized === \"true\") return;\n    wrap.dataset.scriptInitialized = \"true\";\n\n    const headings = Array.from(wrap.querySelectorAll(SELECTOR));\n    if (!headings.length) return;\n\n    // Clone first heading for seamless loop\n    const clone = headings[0].cloneNode(true);\n    wrap.appendChild(clone);\n\n    // Add clone directly to our array (no re-querying)\n    headings.push(clone);\n\n    // Reduced motion support\n    if (window.matchMedia(\"(prefers-reduced-motion: reduce)\").matches) {\n      headings.forEach((el, i) => {\n        el.style.display = i === 0 ? \"block\" : \"none\";\n      });\n      return;\n    }\n\n    if (typeof gsap === \"undefined\") return;\n\n    createTimeline(headings);\n  }\n\n  function createTimeline(headings) {\n\n    const tl = gsap.timeline({ repeat: -1 });\n\n    headings.forEach((el, index) => {\n\n      if (index > 0) {\n        tl.set(el, { display: \"block\" })\n          .from(el, { y: \"1em\", opacity: 0 });\n      }\n\n      if (index < headings.length - 1) {\n        tl.to(el, {\n          delay: 1,\n          y: \"-1em\",\n          opacity: 0\n        })\n        .set(el, {\n          display: \"none\",\n          clearProps: \"transform,opacity\"\n        });\n      }\n\n    });\n\n  }\n\n});\n</script>",
         "data": {
           "search": { "exclude": true },
           "embed": { "meta": { "html": "", "div": false, "script": true, "compilable": false, "iframe": false }, "type": "html" },
@@ -69,10 +68,7 @@
         "comb": "",
         "styleLess": "width: 100%; container-type: @raw<|inline-size|>;",
         "variants": {},
-        "children": [],
-        "createdBy": "687e3d6064de6dabcf26319c",
-        "origin": null,
-        "selector": null
+        "children": []
       },
       {
         "_id": "371e0813-7192-b7f1-e891-43e60029dc9c",
@@ -83,10 +79,7 @@
         "comb": "",
         "styleLess": "position: relative; overflow: hidden; width: 100%;",
         "variants": {},
-        "children": [],
-        "createdBy": "629c31827d66dd22775333c6",
-        "origin": null,
-        "selector": null
+        "children": []
       },
       {
         "_id": "5122f1ab-3b55-f0cc-cea9-fff788badf08",
@@ -97,10 +90,7 @@
         "comb": "",
         "styleLess": "",
         "variants": {},
-        "children": [],
-        "createdBy": "5b94700c7794ec3bc175efda",
-        "origin": null,
-        "selector": null
+        "children": []
       }
     ],
     "assets": [],

@@ -8,18 +8,18 @@ A GSAP-powered heading rotation component that cycles through child elements wit
 
 ## HTML Attributes
 
-| Attribute | Element | Value | Description |
-|---|---|---|---|
-| `data-rotate-heading="component"` | Wrap | — | Required. Marks the root element. |
-| `data-rotate-heading="slot"` | Slot | — | Required. The element whose children will be animated. |
-| `data-duration` | Wrap | Number (default: `0.4`) | Duration in seconds of each enter/exit animation. |
-| `data-delay` | Wrap | Number (default: `1.5`) | Time in seconds each heading is held visible. |
+| Attribute                         | Element | Value                   | Description                                            |
+| --------------------------------- | ------- | ----------------------- | ------------------------------------------------------ |
+| `data-rotate-heading="component"` | Wrap    | —                       | Required. Marks the root element.                      |
+| `data-rotate-heading="slot"`      | Slot    | —                       | Required. The element whose children will be animated. |
+| `data-duration`                   | Wrap    | Number (default: `0.4`) | Duration in seconds of each enter/exit animation.      |
+| `data-delay`                      | Wrap    | Number (default: `1.5`) | Time in seconds each heading is held visible.          |
 
 ## Classes
 
-| Class | Description |
-|---|---|
-| `.rotate-heading_wrap` | Outer wrapper element. Holds data attributes. |
+| Class                  | Description                                                    |
+| ---------------------- | -------------------------------------------------------------- |
+| `.rotate-heading_wrap` | Outer wrapper element. Holds data attributes.                  |
 | `.rotate-heading_slot` | Inner slot element. Direct children are the rotating headings. |
 
 ## Notes
