@@ -34,11 +34,10 @@ These are the source of truth for the scripts embedded inline in `footer.html`. 
 
 | File | Description |
 |---|---|
-| `counterup.html` | Animated number counter triggered on scroll |
 | `misc.html` | Miscellaneous one-off snippets |
 | `ppc-base.html` | Base setup for PPC landing pages |
-| `marquee/` | Scrolling marquee component |
-| `rotate-heading/` | Rotating/cycling heading text animation |
+
+> **Note:** Marquee, rotate-heading, and counterup have moved to the [components repo](https://github.com/wonderistweb/components).
 
 ---
 
