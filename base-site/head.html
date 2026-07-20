@@ -1,25 +1,74 @@
-<!-- Preconnects (reduce DNS + TLS cost) -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<!--<link rel="preconnect" href="https://cdn.plyr.io" crossorigin>-->
-<link rel="preconnect" href="https://www.googletagmanager.com">
-<!--<link rel="preconnect" href="https://api.wonderistcrm.com">-->
-<!--<link rel="preconnect" href="https://link.msgsndr.com">-->
-<link rel="preconnect" href="https://cdn.userway.org">
-<link rel="preconnect" href="https://cdn.velt.dev">
-<!-- Non-blocking CSS for Swiper/Plyr (fallback for no-JS users) -->
 <!-- Swiper JS -->
-<link rel="preload" as="style"
-      href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
-      onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"></noscript>
+<link
+  rel="preload"
+  as="style"
+  href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+  onload="this.onload=null;this.rel='stylesheet';"
+/>
 <!-- Plyr.io CSS -->
-<!-- <link rel="preload" as="style"
-      href="https://cdn.plyr.io/3.7.2/plyr.css"
-      onload="this.onload=null;this.rel='stylesheet'"> 
-<noscript><link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css"></noscript>-->
-<!-- Google Tag Manager (keep early; already async) -->
+<link
+  rel="preload"
+  as="style"
+  href="https://cdn.plyr.io/3.7.2/plyr.css"
+  onload="this.onload=null;this.rel='stylesheet';"
+/>
 
+<!-- Plyr.io VIDEO EMBEDS -->
+<style>
+  :root {
+    --plyr-color-main: white;
+    --plyr-tab-focus-color: transparent;
+    --plyr-video-control-color-hover: black;
+    --plyr-control-icon-size: 1.5em;
+    --plyr-range-thumb-height: 0px;
+    --plyr-range-track-height: 0.6em;
+  }
+  .plyr__control--overlaid {
+    color: black;
+  }
 
-<script>
-(function(global){global.pageFunctions=global.pageFunctions||{executed:{},functions:{},addFunction:function(id,fn){if(!this.functions[id])this.functions[id]=fn},executeFunctions:function(){if(this.added)return;this.added=true;for(const id in this.functions){if(!this.executed[id]){try{this.functions[id]();this.executed[id]=true}catch(e){console.error(`Error executing function ${id}:`,e)}}}}}})(window);
-</script>
+  /* Volume slider sizing */
+  .plyr__volume {
+    width: auto;
+    min-width: auto;
+    max-width: auto;
+  }
+
+  /* Base Plyr container */
+  .plyr {
+    width: 100%;
+    height: 100%;
+  }
+
+  .plyr video {
+    object-fit: cover;
+  }
+
+  /* Remove built-in aspect ratio for custom layouts */
+  .plyr__video-embed__container {
+    padding-top: 56.25% !important;
+    padding-bottom: 0 !important;
+    transform: translateY(0%) !important;
+  }
+
+  /* Ensure iframe fills */
+  .plyr__video-embed__container iframe {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Webflow rich-text + Plyr iframe fix */
+  .plyr_embed.w-richtext > .w-embed.w-iframe {
+    height: 100% !important;
+  }
+
+  /* Cover image fade-out */
+  .hide-cover .plyr_cover {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hide-cover .plyr_cover-img {
+    transform: scale(1.4);
+  }
+</style>

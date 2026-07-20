@@ -1,22 +1,18 @@
-<!-- Google Tag Manager (noscript) — place IMMEDIATELY after <body> open -->
-
-
-<!-- CRM embeds -->
-
+<!-- CRM embeds
+<script defer src="https://api.wonderistcrm.com/js/form_embed.js"></script> -->
 
 <!-- Vendors needed by your code -->
 <script defer src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-<!--<script defer src="https://cdn.plyr.io/3.7.2/plyr.js"></script>-->
+<script defer src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
 
 <!-- Instant.Page prefetch -->
-<script defer type="module" src="//instant.page/3.0.0"
-  integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+<script defer type="module" src="//instant.page/3.0.0" integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
 
 <!-- UserWay Accessibility (non-critical → defer) -->
-<script defer src="https://cdn.userway.org/widget.js"></script>
 <script>
-  window._userway_config = { account: 'NUMZe26EuA' };
+  window._userway_config = { account: "NUMZe26EuA" };
 </script>
+<script defer src="https://cdn.userway.org/widget.js"></script>
 
 <!-- Superflow (kept async per vendor) -->
 <script>
@@ -24,119 +20,211 @@
     const { Velt } = detail || {};
     if (!Velt) return;
     Velt.getCommentElement().setCustomPriority([
-      {"id":"web","name":"Web","color":"#053535","lightColor":"#DAE9E9"},
-      {"id":"copy","name":"Copy","color":"#206767","lightColor":"#DAE9E9"},
-      {"id":"pm","name":"PM","color":"#509999","lightColor":"#DAE9E9"},
-      {"id":"design","name":"Design","color":"#DE6C5F","lightColor":"#DAE9E9"},
-      {"id":"client","name":"Client","color":"#8A2BE2","lightColor":"#EDEBFB"}
+      { id: 'web', name: 'Web', color: '#053535', lightColor: '#DAE9E9' },
+      { id: 'copy', name: 'Copy', color: '#206767', lightColor: '#DAE9E9' },
+      { id: 'pm', name: 'PM', color: '#509999', lightColor: '#DAE9E9' },
+      { id: 'design', name: 'Design', color: '#DE6C5F', lightColor: '#DAE9E9' },
+      { id: 'client', name: 'Client', color: '#8A2BE2', lightColor: '#EDEBFB' },
     ]);
   });
 </script>
-
 <!-- Superflow ADD SCRIPT -->
 
+<!-- Your code (runs after vendors due to defer ordering) -->
+<script defer>
+  /* Lazy load + viewport-based video pause */
+  document.addEventListener('DOMContentLoaded', () => {
+    const videos = document.querySelectorAll('video');
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          if (video.dataset.src && !video.src) {
+            video.muted = true;
+            video.playsInline = true;
+            video.src = video.dataset.src;
+          }
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    }, { rootMargin: '200px', threshold: 0.1 });
+
+    videos.forEach(video => {
+      video.removeAttribute('autoplay');
+      video.pause();
+      observer.observe(video);
+    });
+  });
+</script>
 
 <!-- Your code (runs after vendors due to defer ordering) -->
-<!--<script>
-/* Plyr init + behaviors */
-document.addEventListener("DOMContentLoaded", function () {
-  const playersList = [];
-  document.querySelectorAll(".plyr_component").forEach((component) => {
-    const videoEl = component.querySelector(".plyr_video");
-    if (!videoEl) return;
+<script defer>
+  /* Plyr init + behaviors */
+  document.addEventListener('DOMContentLoaded', function () {
+    const playersList = [];
 
-    const player = new Plyr(videoEl, {
-      controls: ["play", "progress", "current-time", "mute", "fullscreen"],
-      resetOnEnd: true
-    });
-    playersList.push(player);
+    document.querySelectorAll('.plyr_component').forEach((component) => {
+      const videoEl = component.querySelector('.plyr_video');
+      if (!videoEl) return;
 
-    const cover = component.querySelector(".plyr_cover");
-    if (cover) cover.addEventListener("click", () => player.play());
+      const player = new Plyr(videoEl, {
+        controls: ['play', 'progress', 'current-time', 'mute', 'fullscreen'],
+        clickToPlay: true,
+        resetOnEnd: true,
+      });
 
-    player.on("play", () => {
-      document.querySelectorAll(".plyr_component").forEach((c) => c.classList.remove("hide-cover"));
-      component.classList.add("hide-cover");
-      playersList.forEach((other) => { if (other !== player && !other.paused) other.pause(); });
-    });
+      playersList.push(player);
 
-    player.on("ended", () => {
-      component.classList.remove("hide-cover");
-      if (player.fullscreen?.active) player.fullscreen.exit();
-    });
+      const cover = component.querySelector('.plyr_cover');
+      if (cover) {
+        cover.addEventListener('click', () => {
+          player.play();
+        });
+      }
 
-    const pauseBtn = component.querySelector(".plyr_pause-trigger");
-    if (pauseBtn) pauseBtn.addEventListener("click", () => player.pause());
+      player.on('play', () => {
+        document.querySelectorAll('.plyr_component').forEach((c) => {
+          c.classList.remove('hide-cover');
+        });
 
-    player.on("enterfullscreen", () => component.classList.add("contain-video"));
-    player.on("exitfullscreen", () => component.classList.remove("contain-video"));
-  });
+        component.classList.add('hide-cover');
 
-  document.querySelectorAll('[data-slider="next"], [data-slider="previous"], [data-modal-close]')
-    .forEach((btn) => btn.addEventListener("click", () => {
-      playersList.forEach((p) => { if (!p.paused) p.pause(); });
-    }));
-});
-</script>-->
+        playersList.forEach((other) => {
+          if (other !== player && !other.paused) {
+            other.pause();
+          }
+        });
+      });
 
-<script>
-/* AJAX modal (depends on jQuery + GSAP already present via Webflow) */
-window.addEventListener("DOMContentLoaded", () => {
-  function adjaxModal() {
-    let lightbox = $("[tr-ajaxmodal-element='lightbox']");
-    let lightboxClose = $("[tr-ajaxmodal-element='lightbox-close']").attr("aria-label", "Close Modal");
-    let lightboxModal = $("[tr-ajaxmodal-element='lightbox-modal']");
-    let cmsLink = "[tr-ajaxmodal-element='cms-link']";
-    let cmsPageContent = "[tr-ajaxmodal-element='cms-page-content']";
-    let initialPageTitle = document.title;
-    let initialPageUrl = window.location.href;
-    let focusedLink;
+      player.on('ended', () => {
+        component.classList.remove('hide-cover');
 
-    function updatePageInfo(newTitle, newUrl) {
-      lightboxModal.empty();
-      document.title = newTitle;
-      window.history.replaceState({}, "", newUrl);
-    }
-
-    let tl = gsap.timeline({
-      paused: true,
-      onReverseComplete: () => { focusedLink?.focus(); updatePageInfo(initialPageTitle, initialPageUrl); },
-      onComplete: () => { lightboxClose.focus(); }
-    });
-    tl.set("body", { overflow: "hidden" });
-    tl.set(lightbox, { display: "block", onComplete: () => lightboxModal.scrollTop(0) });
-    tl.from(lightbox, { opacity: 0, duration: 0.2 });
-    tl.from(lightboxModal, { y: "5em", duration: 0.2 }, "<");
-
-    $(document).on("click", cmsLink, function (e) {
-      focusedLink = $(this); initialPageUrl = window.location.href; e.preventDefault();
-      let linkUrl = $(this).attr("href");
-      $.ajax({
-        url: linkUrl,
-        success: function (response) {
-          let cmsContent = $(response).find(cmsPageContent);
-          let cmsTitle = $(response).filter("title").text();
-          let cmsUrl = window.location.origin + linkUrl;
-          updatePageInfo(cmsTitle, cmsUrl);
-          lightboxModal.append(cmsContent);
-          tl.play();
-          let lastFocusableChild = lightbox
-            .find("button,[href],input,select,textarea,[tabindex]:not([tabindex='-1'])")
-            .not(":disabled").not("[aria-hidden=true]").last();
-          lastFocusableChild.on("focusout", function () { lightboxClose.focus(); });
+        if (player.fullscreen?.active) {
+          player.fullscreen.exit();
         }
+      });
+
+      const pauseBtn = component.querySelector('.plyr_pause-trigger');
+      if (pauseBtn) {
+        pauseBtn.addEventListener('click', () => {
+          player.pause();
+        });
+      }
+
+      player.on('enterfullscreen', () => {
+        component.classList.add('contain-video');
+      });
+
+      player.on('exitfullscreen', () => {
+        component.classList.remove('contain-video');
+      });
+
+      // Mobile tap to play/pause
+      let tapLock = false;
+
+      player.on('ready', () => {
+        const plyrElement = component.querySelector('.plyr');
+        if (!plyrElement) return;
+
+        plyrElement.addEventListener('touchend', function (e) {
+          if (e.target.closest('.plyr__controls')) return;
+          if (e.target.closest('.plyr_cover')) return;
+          if (tapLock) return;
+
+          tapLock = true;
+          setTimeout(() => {
+            tapLock = false;
+          }, 300);
+
+          if (player.playing) {
+            player.pause();
+          } else {
+            player.play();
+          }
+        });
       });
     });
 
-    lightboxClose.on("click", () => tl.reverse());
-    $(document).on("keydown", (e) => { if (e.key === "Escape") tl.reverse(); });
-    $(document).on("click", lightbox, (e) => { if (!$(e.target).is(lightbox.find("*"))) tl.reverse(); });
-  }
-  adjaxModal();
-});
+    document.querySelectorAll('[data-slider="next"], [data-slider="previous"], [data-modal-close], [swiper="next-button"], [swiper="prev-button"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        playersList.forEach((p) => {
+          if (!p.paused) {
+            p.pause();
+            p.currentTime = 0;
+          }
+        });
+      });
+    });
+  });
 </script>
 
-<!-- Run any queued page functions after everything above is parsed -->
-<script>
-  document.addEventListener('DOMContentLoaded', function(){ pageFunctions.executeFunctions(); });
+<script defer>
+  /* AJAX modal (depends on jQuery + GSAP already present via Webflow) */
+  window.addEventListener('DOMContentLoaded', () => {
+    function adjaxModal() {
+      let lightbox = $("[tr-ajaxmodal-element='lightbox']");
+      let lightboxClose = $("[tr-ajaxmodal-element='lightbox-close']").attr('aria-label', 'Close Modal');
+      let lightboxModal = $("[tr-ajaxmodal-element='lightbox-modal']");
+      let cmsLink = "[tr-ajaxmodal-element='cms-link']";
+      let cmsPageContent = "[tr-ajaxmodal-element='cms-page-content']";
+      let initialPageTitle = document.title;
+      let initialPageUrl = window.location.href;
+      let focusedLink;
+
+      function updatePageInfo(newTitle, newUrl) {
+        lightboxModal.empty();
+        document.title = newTitle;
+        window.history.replaceState({}, '', newUrl);
+      }
+
+      let tl = gsap.timeline({
+        paused: true,
+        onReverseComplete: () => {
+          focusedLink?.focus();
+          updatePageInfo(initialPageTitle, initialPageUrl);
+        },
+        onComplete: () => {
+          lightboxClose.focus();
+        },
+      });
+      tl.set('body', { overflow: 'hidden' });
+      tl.set(lightbox, { display: 'block', onComplete: () => lightboxModal.scrollTop(0) });
+      tl.from(lightbox, { opacity: 0, duration: 0.2 });
+      tl.from(lightboxModal, { y: '5em', duration: 0.2 }, '<');
+
+      $(document).on('click', cmsLink, function (e) {
+        focusedLink = $(this);
+        initialPageUrl = window.location.href;
+        e.preventDefault();
+        let linkUrl = $(this).attr('href');
+        $.ajax({
+          url: linkUrl,
+          success: function (response) {
+            let cmsContent = $(response).find(cmsPageContent);
+            let cmsTitle = $(response).filter('title').text();
+            let cmsUrl = window.location.origin + linkUrl;
+            updatePageInfo(cmsTitle, cmsUrl);
+            lightboxModal.append(cmsContent);
+            tl.play();
+            let lastFocusableChild = lightbox.find("button,[href],input,select,textarea,[tabindex]:not([tabindex='-1'])").not(':disabled').not('[aria-hidden=true]').last();
+            lastFocusableChild.on('focusout', function () {
+              lightboxClose.focus();
+            });
+          },
+        });
+      });
+
+      lightboxClose.on('click', () => tl.reverse());
+      $(document).on('keydown', (e) => {
+        if (e.key === 'Escape') tl.reverse();
+      });
+      $(document).on('click', lightbox, (e) => {
+        if (!$(e.target).is(lightbox.find('*'))) tl.reverse();
+      });
+    }
+    adjaxModal();
+  });
 </script>
