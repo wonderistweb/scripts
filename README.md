@@ -39,7 +39,6 @@ These are the source of truth for the scripts embedded inline in `footer.html`. 
 | `ppc-base.html` | Base setup for PPC landing pages |
 | `marquee/` | Scrolling marquee component |
 | `rotate-heading/` | Rotating/cycling heading text animation |
-| `webflow-clipboard/` | Webflow-specific clipboard utilities |
 
 ---
 
