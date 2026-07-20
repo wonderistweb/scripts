@@ -30,8 +30,8 @@
 </script>
 <!-- Superflow ADD SCRIPT -->
 
-<!-- Your code (runs after vendors due to defer ordering) -->
-<script defer>
+<!-- Your code (runs after vendors due to DOMContentLoaded ordering) -->
+<script>
   /* Lazy load + viewport-based video pause */
   document.addEventListener("DOMContentLoaded", () => {
     const videos = document.querySelectorAll("video");
@@ -63,8 +63,8 @@
   });
 </script>
 
-<!-- Your code (runs after vendors due to defer ordering) -->
-<script defer>
+<!-- Your code (runs after vendors due to DOMContentLoaded ordering) -->
+<script>
   /* Plyr init + behaviors */
   document.addEventListener("DOMContentLoaded", function () {
     const playersList = [];
@@ -164,7 +164,7 @@
   });
 </script>
 
-<script defer>
+<script>
   /* AJAX modal (depends on jQuery + GSAP already present via Webflow) */
   window.addEventListener("DOMContentLoaded", () => {
     function adjaxModal() {
