@@ -1,39 +1,102 @@
 /* Plyr init + behaviors */
 document.addEventListener("DOMContentLoaded", function () {
   const playersList = [];
+
   document.querySelectorAll(".plyr_component").forEach((component) => {
     const videoEl = component.querySelector(".plyr_video");
     if (!videoEl) return;
 
     const player = new Plyr(videoEl, {
       controls: ["play", "progress", "current-time", "mute", "fullscreen"],
+      clickToPlay: true,
       resetOnEnd: true
     });
+
     playersList.push(player);
 
     const cover = component.querySelector(".plyr_cover");
-    if (cover) cover.addEventListener("click", () => player.play());
+    if (cover) {
+      cover.addEventListener("click", () => {
+        player.play();
+      });
+    }
 
     player.on("play", () => {
-      document.querySelectorAll(".plyr_component").forEach((c) => c.classList.remove("hide-cover"));
+      document.querySelectorAll(".plyr_component").forEach((c) => {
+        c.classList.remove("hide-cover");
+      });
+
       component.classList.add("hide-cover");
-      playersList.forEach((other) => { if (other !== player && !other.paused) other.pause(); });
+
+      playersList.forEach((other) => {
+        if (other !== player && !other.paused) {
+          other.pause();
+        }
+      });
     });
 
     player.on("ended", () => {
       component.classList.remove("hide-cover");
-      if (player.fullscreen?.active) player.fullscreen.exit();
+
+      if (player.fullscreen?.active) {
+        player.fullscreen.exit();
+      }
     });
 
     const pauseBtn = component.querySelector(".plyr_pause-trigger");
-    if (pauseBtn) pauseBtn.addEventListener("click", () => player.pause());
+    if (pauseBtn) {
+      pauseBtn.addEventListener("click", () => {
+        player.pause();
+      });
+    }
 
-    player.on("enterfullscreen", () => component.classList.add("contain-video"));
-    player.on("exitfullscreen", () => component.classList.remove("contain-video"));
+    player.on("enterfullscreen", () => {
+      component.classList.add("contain-video");
+    });
+
+    player.on("exitfullscreen", () => {
+      component.classList.remove("contain-video");
+    });
+
+    // Mobile tap to play/pause
+    let tapLock = false;
+
+    player.on("ready", () => {
+      const plyrElement = component.querySelector(".plyr");
+      if (!plyrElement) return;
+
+      plyrElement.addEventListener("touchend", function (e) {
+        if (e.target.closest(".plyr__controls")) return;
+        if (e.target.closest(".plyr_cover")) return;
+
+        if (tapLock) return;
+
+        tapLock = true;
+        setTimeout(() => {
+          tapLock = false;
+        }, 300);
+
+        if (player.playing) {
+          player.pause();
+        } else {
+          player.play();
+        }
+      });
+    });
   });
 
-  document.querySelectorAll('[data-slider="next"], [data-slider="previous"], [data-modal-close]')
-    .forEach((btn) => btn.addEventListener("click", () => {
-      playersList.forEach((p) => { if (!p.paused) p.pause(); });
-    }));
+  document
+    .querySelectorAll(
+      '[data-slider="next"], [data-slider="previous"], [data-modal-close], [swiper="next-button"], [swiper="prev-button"]'
+    )
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        playersList.forEach((p) => {
+          if (!p.paused) {
+            p.pause();
+            p.currentTime = 0;
+          }
+        });
+      });
+    });
 });
